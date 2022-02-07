@@ -1,0 +1,100 @@
+
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET utf8 ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`TRAINLIST`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`TRAINLIST` (
+  `TRAIN_NO` VARCHAR(55) NOT NULL,
+  `TRAIN_NAME` VARCHAR(150) NULL,
+  `SOURCE` VARCHAR(145) NULL,
+  `DESTINATION` VARCHAR(145) NULL,
+  `AC_TICKET` VARCHAR(45) NULL,
+  `GENERAL_TICKET` VARCHAR(45) NULL,
+  PRIMARY KEY (`TRAIN_NO`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`TRAIN_STATUS`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`TRAIN_STATUS` (
+  `TRAIN_NO` VARCHAR(50) NULL,
+  `TRAIN_DATE` DATETIME(30) NULL,
+  `TOTAL_NO_OF_AC_SEATS` INT NULL,
+  `TOTAL_NO_OF_GNRL_DEATS` INT NULL,
+  `NO_OF_AC_SEATS_BOOKED` INT NULL,
+  `NO_OF_GNRL_SEATS_BOOKED` INT NULL,
+  `AVAILABLE_AC_SEATS` INT NULL,
+  `INT` INT NULL,
+  `TRAIN_STATUScol` VARCHAR(45) NULL,
+  INDEX `TRAIN_NO_idx` (`TRAIN_NO` ASC) VISIBLE,
+  CONSTRAINT `TRAIN_NO`
+    FOREIGN KEY (`TRAIN_NO`)
+    REFERENCES `mydb`.`TRAINLIST` (`TRAIN_NO`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`BOOKING`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`BOOKING` (
+  `TICKET_NO` VARCHAR(50) NOT NULL,
+  `TRAIN_DATE` DATETIME(30) NULL,
+  `TRAIN_NO` VARCHAR(45) NULL,
+  `TOTAL_NO_AC_SEATES` INT NULL,
+  `BOOKED_AC_SEATES` INT NULL,
+  `AVAILABLE_AC_SEATS` INT NULL,
+  `TOTAL_NO_GNRL_SEATES` INT NULL,
+  `BOOKED_GNRL_SEATES` INT NULL,
+  `AVAILABLE_GNRL_SEATS` INT NULL,
+  `BOOLINFG_DATE` DATE NULL,
+  PRIMARY KEY (`TICKET_NO`))
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`PASSENGER`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`PASSENGER` (
+  `TICKET_ID` VARCHAR(50) NULL,
+  `TRAIN_NO` VARCHAR(45) NULL,
+  `DATE_FOR_WHICH_TICKET_BOOKED` DATETIME(30) NULL,
+  `NAME` VARCHAR(150) NULL,
+  `AGE` INT NULL,
+  `GENDER` VARCHAR(45) NULL,
+  `ADDRESS` VARCHAR(405) NULL,
+  `RESERVATION_STATUS` VARCHAR(45) NULL,
+  INDEX `TRAIN_NO_idx` (`TRAIN_NO` ASC) VISIBLE,
+  INDEX `TICKET_ID_idx` (`TICKET_ID` ASC) VISIBLE,
+  CONSTRAINT `TRAIN_NO`
+    FOREIGN KEY (`TRAIN_NO`)
+    REFERENCES `mydb`.`TRAINLIST` (`TRAIN_NO`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `TICKET_ID`
+    FOREIGN KEY (`TICKET_ID`)
+    REFERENCES `mydb`.`BOOKING` (`TICKET_NO`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`CANCEL`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `mydb`.`CANCEL` (
+  `TICKET_ID` VARCHAR(59) NULL,
+  `BOOKING_CANCEL_STATUS` VARCHAR(45) NULL,
+  INDEX `TIKECT_ID_idx` (`TICKET_ID` ASC) VISIBLE,
+  CONSTRAINT `TIKECT_ID`
+    FOREIGN KEY (`TICKET_ID`)
+    REFERENCES `mydb`.`BOOKING` (`TICKET_NO`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
